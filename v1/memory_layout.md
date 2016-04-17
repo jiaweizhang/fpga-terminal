@@ -11,6 +11,7 @@
 * 100 - "terminal: "
 * 200 - "gthc"
 * 300 - "wordlen"
+* 400 - "password correct"
 
 * 10000 - ' ' (space) bitmap (10x10) - might do 8x8
 * 10100 - a bitmap (10x10)
