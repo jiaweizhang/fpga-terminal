@@ -3,13 +3,15 @@
 main:
 
 addi $r10, $r0, 1 # $r10 contains which char 0-indexed (0-3071) mem location
-addi $r12, $r0, 10
+# as well as the pixel location
 
 # r10 contains char 0-indexed mem location (0-3071)
 
-add $r23, $r12, $r0 # pixel location
 
-lw $r24, 5000($r10) # r24 contains char bitmap location (10000-12900)
+lw $23, 3027($r10) r23 contains desired pixel location
+lw $24, 0($r10) # r24 contains char bitmap location (10000-12900)
+
+# r24 should contain bitmapped location
 
 addi $r6, $r0, 10 # number of rows to iterate
 addi $r7, $r0, 10 # number of cols to iterate

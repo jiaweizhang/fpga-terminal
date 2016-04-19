@@ -7,16 +7,14 @@
 
 ### Layout 
 
-* 0 - "password: "
-* 100 - "terminal: "
-* 200 - "gthc"
-* 300 - "wordlen"
-* 400 - "password correct"
+* 0 - top left char - maps to bitmap address
+* 63 - top right char
+* 64 - second row top left
+* 3071 - bottom right char
 
-* 5000 - top left char
-* 5063 - top right char
-* 5064 - second row top left
-* 8071 - bottom right char
+* 3072 - top left char - maps to pixel address
+* ...
+* 6143 - bottom right char 
 
 * 10000 - ' ' (space, blank) bitmap (10x10) - might do 8x8
 * 10100 - a bitmap (10x10)
