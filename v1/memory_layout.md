@@ -16,13 +16,13 @@
 * ...
 * 6143 - bottom right char 
 
+* 9900 - start of 100 char buffer
+
 * 10000 - ' ' (space, blank) bitmap (10x10) - might do 8x8
 * 10100 - a bitmap (10x10)
 * 10200 - b bitmap (10x10)
-* ...
+* ...5
 * 12600 - z bitmap (10x10)
 * 12700 - : 
 * 12800 - _
 * 12900 - 
-
-* 15000 - start of use input buffer

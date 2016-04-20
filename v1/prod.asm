@@ -3,9 +3,14 @@
 main:
 
 add $r0, $r0, $r0
-#jal refresh
 
 jal shiftUp
+
+jal printBuffer
+
+jal shiftUp
+
+jal printBuffer
 
 jal refresh
 
@@ -13,6 +18,23 @@ j finish
 
 # ~~~~ printBuffer -> last row ~~~~
 
+printBuffer:
+
+addi $r10, $r0, 0 # loads bottom left char
+addi $r12, $r0, 64 # counter up to 64
+
+printChar:
+beq $r10, $r12, finishedPrintBuffer
+
+lw $r21, 9900($r11) # loads char
+sw $r21, 3008($r10) # stores char into last row
+addi $r10, $r10, 1
+
+j printChar
+
+finishedPrintBuffer:
+
+jr $r31
 
 # shift up
 
