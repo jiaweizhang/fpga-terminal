@@ -8,7 +8,7 @@ jal refresh
 jal waitTenSec
 
 jal shiftUp
-jal printBuffer
+#jal printBuffer
 jal refresh
 jal waitTenSec
 
@@ -62,7 +62,7 @@ addi $r12, $r0, 64 # counter up to 64
 printChar:
 beq $r10, $r12, finishedPrintBuffer
 
-lw $r21, 9900($r11) # loads char
+lw $r21, 9900($r10) # loads char
 sw $r21, 3008($r10) # stores char into last row
 addi $r10, $r10, 1
 
