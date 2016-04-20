@@ -4,17 +4,53 @@ main:
 
 add $r0, $r0, $r0
 
+jal refresh
+jal waitTenSec
+
 jal shiftUp
-
 jal printBuffer
+jal refresh
+jal waitTenSec
 
 jal shiftUp
-
 jal printBuffer
-
 jal refresh
 
 j finish
+
+# ~~~~~ wait 1 second ~~~~ 
+# haxx
+
+waitOneSec:
+
+addi $r27, $r0, 0 # counter iterator
+addi $r28, $r0, 1 # put 1 first
+sll $r28, $r28, 23 # 8 million something
+
+veryShortWait:
+beq $r27, $r28, finishedWait
+addi $r27, $r27, 1
+j veryShortWait
+
+finishedWait:
+jr $r31
+
+# ~~~~~ wait 10 seconds ~~~~ 
+# haxx
+
+waitTenSec:
+
+addi $r27, $r0, 0 # counter iterator
+addi $r28, $r0, 1 # put 1 first
+sll $r28, $r28, 26 # 8 million something * 8
+
+mediumWait:
+beq $r27, $r28, finishedMediumWait
+addi $r27, $r27, 1
+j mediumWait
+
+finishedMediumWait:
+jr $r31
 
 # ~~~~ printBuffer -> last row ~~~~
 
@@ -36,7 +72,7 @@ finishedPrintBuffer:
 
 jr $r31
 
-# shift up
+# ~~~~ shift up ~~~~
 
 shiftUp:
 
@@ -72,6 +108,7 @@ finishedShift:
 jr $r19
 
 
+# ~~~~~ refresh
 refresh:
 
 addi $r10, $r0, 0 # r10 is iterator
@@ -90,6 +127,7 @@ finishedRefresh:
 
 jr $r20
 
+# ~~~~~ write Char to VGA
 writeCharToVGA:
 
 # r10 contains char 0-indexed mem location (0-3071)
