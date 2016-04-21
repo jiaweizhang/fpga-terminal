@@ -15,34 +15,38 @@ add $r0, $r0, $r0
 
 addi $r6, $r0, 3008
 
+addi $r10, $r0, 10000
+sw $r10, 15($r0)
 addi $r10, $r0, 15
-
 jal writeCharToVGA
 
 readyToType:
-add $r25, $r1, $r0
-bne $r25, $r0, displayChar
+add $r5, $r1, $r0
+bne $r5, $r0, displayChar
 j readyToType
 
-displayChar:
+displayChar: 
 
 addi $r27, $r0, 102
-beq $r25, $r27, backspace
+beq $r5, $r27, backspace
 addi $r27, $r0, 107
-beq $r25, $r27, moveLeft
+beq $r5, $r27, moveLeft
 addi $r27, $r0, 116
-beq $r25, $r27, moveRight
+beq $r5, $r27, moveRight
 addi $r27, $r0, 117
-beq $r25, $r27, moveUp
+beq $r5, $r27, moveUp
 addi $r27, $r0, 114
-beq $r25, $r27, moveDown
+beq $r5, $r27, moveDown
 addi $r27, $r0, 90
-beq $r25, $r27, doEnter
-lw $r22, 6144($25)
+beq $r5, $r27, doEnter
+
+lw $r22, 6144($r5)
 sw $r22, 0($r6)
-add $r10, $r6, $r0
-jal writeCharToVGA
+
+jal refresh
+
 addi $r6, $r6, 1
+
 jal waitKey
 j readyToType
 
@@ -50,49 +54,51 @@ backspace:
 addi $r6, $r6, -1
 addi $r27, $r0, 10000
 sw $r27, 0($r6)
-add $r10, $r6, $r0
-jal writeCharToVGA
+jal refresh
 jal waitKey
 j readyToType
 
 moveLeft:
 addi $r6, $r6, -1
+jal refresh
 jal waitKey
 j readyToType
 
 moveRight:
 addi $r6, $r6, 1
+jal refresh
 jal waitKey
 j readyToType
 
 moveUp:
 addi $r6, $r6, -64
+jal refresh
 jal waitKey
 j readyToType
 
 moveDown:
 addi $r6, $r6, 64
+jal refresh
 jal waitKey
 j readyToType
 
 doEnter:
 jal shiftUp
+
+addi $r6, $r0, 3008
 jal refresh
-jal moveCursorToBeginning
-j moveDown
+
+# moves to beginning of next line
+#addi $r21, $r0, 63 # bitmask
+#and $r21, $r6, $r21 
+#sub $r6, $r6, $r21
+jal waitKey
+j readyToType
+
+
+
 
 j finish
-
-moveCursorToBeginning:
-addi $r21, $r0, 63 # bitmask
-and $r22, $r6, $r21 
-beq $r0, $r22, cursorAtBeginning
-addi $r6, $r6, -1
-j moveCursorToBeginning
-
-
-cursorAtBeginning:
-jr $r31
 
 
 #~~~~ Clear screen
@@ -193,7 +199,7 @@ jr $r31
 
 shiftUp:
 
-add $r19, $r0, $r31 # move RA into another register
+sw $r31, 9898($r0)
 
 addi $r10, $r0, 0 # r10 is iterator
 addi $r12, $r0, 3008 # r12 is max value of row above last
@@ -222,7 +228,8 @@ j clearSingleChar
 
 finishedShift:
 
-jr $r19
+lw $r31, 9898($r0)
+jr $r31
 
 
 # ~~~~~ refresh
@@ -230,7 +237,8 @@ refresh:
 
 addi $r10, $r0, 0 # r10 is iterator
 addi $r11, $r0, 3072 # r11 is max value of char
-add $r20, $r0, $r31 # move RA into another register
+#add $r20, $r0, $r31 # move RA into another register
+sw $r31, 9899($r0)
 
 charIteration:
 beq $r10, $r11, finishedRefresh
@@ -242,7 +250,8 @@ j charIteration
 
 finishedRefresh:
 
-jr $r20
+lw $r31, 9899($r0)
+jr $r31
 
 # ~~~~~ write Char to VGA
 writeCharToVGA:
@@ -261,6 +270,14 @@ doCol:
 beq $r27, $r0, doRow # while still cols left to do
 
 lw $r25, 0($r24) # $r4 now contains pixel to write
+
+#addi $r22, $r6, 1
+bne $r6, $r10, dontInvertColor
+addi $r28, $r0, 255
+sub $r25, $r28, $r25 # subtract from 255 to invert
+
+dontInvertColor:
+
 vga $r25, 0($r23) # store pixel to vga
 
 addi $r23, $r23, 1 # add one to pixel address

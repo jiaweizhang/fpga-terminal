@@ -16,6 +16,8 @@
 * ...
 * 6143 - bottom right char 
 
+* 9898 - RA for shiftUp
+* 9899 - RA for refresh
 * 9900 - start of 100 char buffer
 
 * 10000 - ' ' (space, blank) bitmap (10x10) - might do 8x8
