@@ -4,6 +4,10 @@ main:
 
 add $r0, $r0, $r0
 
+addi $r10, $r1, 0
+
+jal writeCharToVGA
+
 #jal refresh
 #jal waitTenSec
 
@@ -11,67 +15,29 @@ add $r0, $r0, $r0
 #jal clearScreen
 #jal printBuffer
 #jal refresh
-#jal waitTenSec
+jal waitTenSec
 
-addi $r6, $r0, 3008
+#addi $r6, $r0, 64
 
 addi $r10, $r0, 15
 
 jal writeCharToVGA
 
 readyToType:
-add $r25, $r1, $r0
-bne $r25, $r0, displayChar
+add $r5, $r1, $r0
+bne $r5, $r0, displayChar
 j readyToType
 
 displayChar:
 
-addi $r27, $r0, 102
-beq $r25, $r27, backspace
-addi $r27, $r0, 107
-beq $r25, $r27, moveLeft
-addi $r27, $r0, 116
-beq $r25, $r27, moveRight
-addi $r27, $r0, 117
-beq $r25, $r27, moveUp
-addi $r27, $r0, 114
-beq $r25, $r27, moveDown
-lw $r22, 6144($25)
-sw $r22, 0($r6)
-add $r10, $r6, $r0
+#addi $r3, $r0, 10000
+#sw $r2, 0($r6)
+add $r10, $r5, $r0
 jal writeCharToVGA
-addi $r6, $r6, 1
+#addi $r6, $r6, 1
 jal waitKey
 j readyToType
 
-backspace:
-addi $r6, $r6, -1
-addi $r27, $r0, 10000
-sw $r27, 0($r6)
-add $r10, $r6, $r0
-jal writeCharToVGA
-jal waitKey
-j readyToType
-
-moveLeft:
-addi $r6, $r6, -1
-jal waitKey
-j readyToType
-
-moveRight:
-addi $r6, $r6, 1
-jal waitKey
-j readyToType
-
-moveUp:
-addi $r6, $r6, -64
-jal waitKey
-j readyToType
-
-moveDown:
-addi $r6, $r6, 64
-jal waitKey
-j readyToType
 
 
 j finish
@@ -106,7 +72,7 @@ waitKey:
 
 addi $r27, $r0, 0 # counter iterator
 addi $r28, $r0, 1 # put 1 first
-sll $r28, $r28, 18 # 8 million something
+sll $r28, $r28, 22 # 8 million something
 
 veryShortWaitKey:
 beq $r27, $r28, finishedWaitKey

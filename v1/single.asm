@@ -5,6 +5,14 @@ addi $r10, $r0, 2
 
 jal writeCharToVGA
 
+addi $r10, $r1, 0
+
+jal writeCharToVGA
+
+addi $r10, $r0, 4
+
+jal writeCharToVGA
+
 j finish
 
 writeCharToVGA:
