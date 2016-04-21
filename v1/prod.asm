@@ -4,21 +4,11 @@ main:
 
 add $r0, $r0, $r0
 
-#jal refresh
-#jal waitTenSec
-
-#jal shiftUp
-#jal clearScreen
-#jal printBuffer
-#jal refresh
-#jal waitTenSec
-
 addi $r6, $r0, 3008
 
-addi $r10, $r0, 10000
-sw $r10, 15($r0)
-addi $r10, $r0, 15
-jal writeCharToVGA
+jal clearScreen
+
+jal refresh
 
 readyToType:
 add $r5, $r1, $r0
@@ -103,24 +93,24 @@ j finish
 
 clearScreen:
 
-add $r19, $r0, $r31 # move RA into another register
+sw $r31, 9897($r0)
 
-addi $r10, $r0, 0 # r10 is iterator
-addi $r11, $r0, 10000 # space
-addi $r12, $r0, 3072 # r12 is max value of row above last
+addi $r10, $r0, 3072 # r10 is iterator
+addi $r21, $r0, 10000 # space
 
 clearSingleChar:
 
-beq $r10, $r12, finishedClearScreen
+beq $r10, $r0, finishedClearScreen
+addi $r10, $r10, -1
+sw $r21, 0($r10) # store char of char above
 
-sw $r11, 0($r10) # store char of char above
-
-addi $r10, $r10, 1
 j clearSingleChar
 
 finishedClearScreen:
 
-jr $r19
+lw $r31, 9897($r0)
+jr $r31
+
 
 # ~~~~~ wait very short second ~~~~ 
 # haxx
@@ -216,13 +206,13 @@ clearBottom:
 addi $r21, $r0, 10000 # load space
 addi $r12, $r0, 3072 # last character
 
-clearSingleChar:
+clearSingleCharBottom:
 beq $r10, $r12, finishedShift
 
 sw $r21, 0($10)
 addi $r10, $r10, 1
 
-j clearSingleChar
+j clearSingleCharBottom
 
 finishedShift:
 
