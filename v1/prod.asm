@@ -71,6 +71,20 @@ jal waitKey
 j readyToType
 
 doEnter:
+
+lw $r21, 7000($r0)
+lw $r22, 3008($r0)
+bne $r21, $r22, finishEnter
+lw $r21, 7001($r0)
+lw $r22, 3009($r0)
+bne $r21, $r22, finishEnter
+lw $r21, 7002($r0)
+lw $r22, 3010($r0)
+bne $r21, $r22, finishEnter
+
+j printAbc
+
+finishEnter:
 jal shiftUp
 
 addi $r6, $r0, 3008
@@ -88,8 +102,40 @@ j readyToType
 
 j finish
 
+# ~~~~ printAbc
 
-#~~~~ Clear screen
+printAbc:
+jal shiftUp
+addi $r10, $r0, 7000
+addi $r12, $r0, 3
+jal stringPrint
+j finishEnter
+
+# ~~~~ String print
+# r10 is mem location of first string
+# r12 is length to print
+
+stringPrint:
+
+addi $r11, $r0, 0 # counter
+
+singleStringPrint:
+
+beq $r12, $r0, finishedStringPrint
+lw $r21, 0($r10) # load char
+sw $r21, 3008($r11) # store into bottom row
+addi $r10, $r10, 1
+addi $r11, $r11, 1
+addi $r12, $r12, -1
+j singleStringPrint
+
+finishedStringPrint:
+
+jr $r31
+
+
+
+# ~~~~ Clear screen
 
 clearScreen:
 
@@ -161,26 +207,6 @@ addi $r27, $r27, 1
 j mediumWait
 
 finishedMediumWait:
-jr $r31
-
-# ~~~~ printBuffer -> last row ~~~~
-
-printBuffer:
-
-addi $r10, $r0, 0 # loads bottom left char
-addi $r12, $r0, 64 # counter up to 64
-
-printChar:
-beq $r10, $r12, finishedPrintBuffer
-
-lw $r21, 9900($r10) # loads char
-sw $r21, 3008($r10) # stores char into last row
-addi $r10, $r10, 1
-
-j printChar
-
-finishedPrintBuffer:
-
 jr $r31
 
 # ~~~~ shift up ~~~~

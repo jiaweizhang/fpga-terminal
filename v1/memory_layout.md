@@ -16,8 +16,9 @@
 * ...
 * 6143 - bottom right char 
 
-* 7000 - "Enter your password:"
+* 7000 - "abc"
 
+* 9896 - RA for stringCompare
 * 9897 - RA for clearScreen
 * 9898 - RA for shiftUp
 * 9899 - RA for refresh
