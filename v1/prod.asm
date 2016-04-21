@@ -42,10 +42,8 @@ beq $r5, $r27, doEnter
 
 lw $r22, 6144($r5)
 sw $r22, 0($r6)
-
-jal refresh
-
 addi $r6, $r6, 1
+jal refresh
 
 jal waitKey
 j readyToType
@@ -243,7 +241,15 @@ sw $r31, 9899($r0)
 charIteration:
 beq $r10, $r11, finishedRefresh
 
+beq $r6, $r10, writeInverse
+
 jal writeCharToVGA
+
+j finishedInverse
+writeInverse:
+jal writeCharToVGAInverse
+finishedInverse:
+
 addi $r10, $r10, 1 # increment iterator
 
 j charIteration
@@ -258,8 +264,8 @@ writeCharToVGA:
 
 # r10 contains char 0-indexed mem location (0-3071)
 
-lw $23, 3072($r10) # r23 contains desired pixel location
-lw $24, 0($r10) # r24 contains char bitmap location (10000-12900)
+lw $r23, 3072($r10) # r23 contains desired pixel location
+lw $r24, 0($r10) # r24 contains char bitmap location (10000-12900)
 
 # r24 should contain bitmapped location
 
@@ -272,11 +278,11 @@ beq $r27, $r0, doRow # while still cols left to do
 lw $r25, 0($r24) # $r4 now contains pixel to write
 
 #addi $r22, $r6, 1
-bne $r6, $r10, dontInvertColor
-addi $r28, $r0, 255
-sub $r25, $r28, $r25 # subtract from 255 to invert
+#bne $r6, $r10, dontInvertColor
+#addi $r28, $r0, 255
+#sub $r25, $r28, $r25 # subtract from 255 to invert
 
-dontInvertColor:
+#dontInvertColor:
 
 vga $r25, 0($r23) # store pixel to vga
 
@@ -295,6 +301,48 @@ addi $r27, $r0, 10 # number of cols to iterate
 j doCol
 
 finishedChar:
+
+jr $r31
+
+
+# ~~~~~ write Char to VGA Inverse
+writeCharToVGAInverse:
+
+# r10 contains char 0-indexed mem location (0-3071)
+
+lw $r23, 3072($r10) # r23 contains desired pixel location
+lw $r24, 0($r10) # r24 contains char bitmap location (10000-12900)
+
+# r24 should contain bitmapped location
+
+addi $r26, $r0, 10 # number of rows to iterate
+addi $r27, $r0, 10 # number of cols to iterate
+
+doColInverse:
+beq $r27, $r0, doRowInverse # while still cols left to do
+
+lw $r25, 0($r24) # $r4 now contains pixel to write
+
+addi $r28, $r0, 255
+sub $r25, $r28, $r25 # subtract from 255 to invert
+
+vga $r25, 0($r23) # store pixel to vga
+
+addi $r23, $r23, 1 # add one to pixel address
+addi $r24, $r24, 1   # add one to bitmap location
+
+addi $r27, $r27, -1 # subtract one
+j doColInverse
+
+doRowInverse:
+addi $r26, $r26, -1 
+beq $r26, $r0, finishedCharInverse # while still rows left to do
+
+addi $r23, $r23, 630 # drop down one row to the beginning of char
+addi $r27, $r0, 10 # number of cols to iterate
+j doColInverse
+
+finishedCharInverse:
 
 jr $r31
 
