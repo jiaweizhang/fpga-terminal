@@ -36,6 +36,8 @@ addi $r27, $r0, 117
 beq $r25, $r27, moveUp
 addi $r27, $r0, 114
 beq $r25, $r27, moveDown
+addi $r27, $r0, 90
+beq $r25, $r27, doEnter
 lw $r22, 6144($25)
 sw $r22, 0($r6)
 add $r10, $r6, $r0
@@ -73,8 +75,25 @@ addi $r6, $r6, 64
 jal waitKey
 j readyToType
 
+doEnter:
+jal shiftUp
+jal refresh
+jal moveCursorToBeginning
+j moveDown
 
 j finish
+
+moveCursorToBeginning:
+addi $r21, $r0, 63 # bitmask
+and $r22, $r6, $r21 
+beq $r0, $r22, cursorAtBeginning
+addi $r6, $r6, -1
+j moveCursorToBeginning
+
+
+cursorAtBeginning:
+jr $r31
+
 
 #~~~~ Clear screen
 
