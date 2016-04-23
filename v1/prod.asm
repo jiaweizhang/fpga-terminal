@@ -72,21 +72,49 @@ j readyToType
 
 doEnter:
 
-lw $r21, 7000($r0)
-lw $r22, 3008($r0)
-bne $r21, $r22, finishEnter
-lw $r21, 7001($r0)
-lw $r22, 3009($r0)
-bne $r21, $r22, finishEnter
-lw $r21, 7002($r0)
-lw $r22, 3010($r0)
-bne $r21, $r22, finishEnter
+# abc
+addi $r10, $r0, 7001
+addi $r11, $r0, 3008
+addi $r12, $r0, 3
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+beq $r13, $r0, printOptionEverything
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 
 j printAbc
 
+# everything
+printOptionEverything:
+addi $r10, $r0, 6990
+addi $r11, $r0, 3008
+addi $r12, $r0, 10
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+beq $r13, $r0, finishEnter
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+j printEverything
+
 finishEnter:
 jal shiftUp
+jal shiftUp
+j printConsole
 
+finishEnter2:
+jal shiftUp
 addi $r6, $r0, 3008
 jal refresh
 
@@ -106,10 +134,28 @@ j finish
 
 printAbc:
 jal shiftUp
-addi $r10, $r0, 7000
-addi $r12, $r0, 3
+addi $r10, $r0, 7001
+addi $r12, $r0, 26
 jal stringPrint
 j finishEnter
+
+# ~~~~ printEverything
+
+printEverything:
+jal shiftUp
+addi $r10, $r0, 7000
+addi $r12, $r0, 56
+jal stringPrint
+j finishEnter
+
+# ~~~~ printConsole
+
+printConsole:
+addi $r10, $r0, 7060
+addi $r12, $r0, 20
+jal stringPrint
+j finishEnter2
+
 
 # ~~~~ String print
 # r10 is mem location of first string
@@ -133,6 +179,40 @@ finishedStringPrint:
 
 jr $r31
 
+# ~~~~ String compare
+# r10 contains mem address of first string
+# r11 contains mem address of second string
+# r12 contains length to compare
+# r13 returns 1 if same or 0 if different
+
+stringCompare:
+
+beq $r12, $r0, stringsAreEqual
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+lw $r20, 0($r10)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+lw $r21, 0($r11)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r20, $r21, stringsNotEqual
+addi $r12, $r12, -1
+addi $r10, $r10, 1
+addi $r11, $r11, 1
+j stringCompare
+
+stringsAreEqual:
+addi $r13, $r0, 1
+jr $r31
+
+
+stringsNotEqual:
+addi $r13, $r0, 0
+jr $r31
 
 
 # ~~~~ Clear screen
