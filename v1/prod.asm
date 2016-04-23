@@ -83,18 +83,11 @@ jal stringCompare
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
-beq $r13, $r0, printOptionEverything
-add $r0, $r0, $r0
-add $r0, $r0, $r0
-add $r0, $r0, $r0
+bne $r13, $r0, printAbc
 
-j printAbc
-
-# everything
-printOptionEverything:
-addi $r10, $r0, 6990
+addi $r10, $r0, 7080
 addi $r11, $r0, 3008
-addi $r12, $r0, 10
+addi $r12, $r0, 5
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
@@ -102,11 +95,22 @@ jal stringCompare
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
-beq $r13, $r0, finishEnter
+bne $r13, $r0, printEverythingWorking
+
+addi $r10, $r0, 7090
+addi $r11, $r0, 3008
+addi $r12, $r0, 5
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
-j printEverything
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, printP
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 
 finishEnter:
 jal shiftUp
@@ -141,10 +145,19 @@ j finishEnter
 
 # ~~~~ printEverything
 
-printEverything:
+printEverythingWorking:
 jal shiftUp
 addi $r10, $r0, 7000
 addi $r12, $r0, 56
+jal stringPrint
+j finishEnter
+
+# ~~~~ printP
+
+printP:
+jal shiftUp
+addi $r10, $r0, 7057
+addi $r12, $r0, 3
 jal stringPrint
 j finishEnter
 
