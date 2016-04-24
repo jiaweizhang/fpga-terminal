@@ -155,10 +155,38 @@ j finishEnter
 # ~~~~ printP
 
 printP:
+
+lw $r25, 3014($r0) # 13200
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+
 jal shiftUp
-addi $r10, $r0, 7057
-addi $r12, $r0, 3
-jal stringPrint
+
+addi $r20, $r0, 15700
+sw $r20, 3008($r0)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+addi $r25, $r25, -12700 # 500 will be r21
+addi $r22, $r0, 3009
+addi $r20, $r0, 15800
+
+printPShaft:
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+beq $r25, $r0, finishPrintP
+sw $r20, 0($r22)
+addi $r25, $r25, -100
+addi $r22, $r22, 1
+j printPShaft
+
+finishPrintP:
+addi $r20, $r0, 15900
+sw $r20, 0($r22)
+jal shiftUp
+
 j finishEnter
 
 # ~~~~ printConsole
@@ -375,6 +403,9 @@ writeCharToVGA:
 
 lw $r23, 3072($r10) # r23 contains desired pixel location
 lw $r24, 0($r10) # r24 contains char bitmap location (10000-12900)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 
 # r24 should contain bitmapped location
 
@@ -420,7 +451,13 @@ writeCharToVGAInverse:
 # r10 contains char 0-indexed mem location (0-3071)
 
 lw $r23, 3072($r10) # r23 contains desired pixel location
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 lw $r24, 0($r10) # r24 contains char bitmap location (10000-12900)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 
 # r24 should contain bitmapped location
 
@@ -431,6 +468,9 @@ doColInverse:
 beq $r27, $r0, doRowInverse # while still cols left to do
 
 lw $r25, 0($r24) # $r4 now contains pixel to write
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 
 addi $r28, $r0, 255
 sub $r25, $r28, $r25 # subtract from 255 to invert
