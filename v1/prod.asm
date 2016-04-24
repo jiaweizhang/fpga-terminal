@@ -10,6 +10,8 @@ jal clearScreen
 
 jal refresh
 
+j printConsole
+
 readyToType:
 add $r5, $r1, $r0
 bne $r5, $r0, displayChar
@@ -108,6 +110,19 @@ add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 bne $r13, $r0, printP
+
+addi $r10, $r0, 7095
+addi $r11, $r0, 3008
+addi $r12, $r0, 5
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, main
+
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
