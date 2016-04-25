@@ -1,5 +1,13 @@
 .text
 
+begin:
+
+add $r0, $r0, $r0
+addi $r6, $r0, 3072
+jal refresh
+
+jal waitTenSec
+
 main:
 
 add $r0, $r0, $r0
@@ -87,6 +95,45 @@ add $r0, $r0, $r0
 add $r0, $r0, $r0
 bne $r13, $r0, printAbc
 
+
+# end
+addi $r10, $r0, 7210
+addi $r11, $r0, 3008
+addi $r12, $r0, 6
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, finish
+
+addi $r10, $r0, 7220
+addi $r11, $r0, 3008
+addi $r12, $r0, 5
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, doSleep
+
+addi $r10, $r0, 7140
+addi $r11, $r0, 3008
+addi $r12, $r0, 7
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, guessNumberGame
+
+
 addi $r10, $r0, 7080
 addi $r11, $r0, 3008
 addi $r12, $r0, 5
@@ -111,6 +158,18 @@ add $r0, $r0, $r0
 add $r0, $r0, $r0
 bne $r13, $r0, printP
 
+addi $r10, $r0, 7160
+addi $r11, $r0, 3008
+addi $r12, $r0, 20
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, printDuke
+
 addi $r10, $r0, 7095
 addi $r11, $r0, 3008
 addi $r12, $r0, 5
@@ -123,13 +182,44 @@ add $r0, $r0, $r0
 add $r0, $r0, $r0
 bne $r13, $r0, main
 
+addi $r10, $r0, 7150
+addi $r11, $r0, 3008
+addi $r12, $r0, 5
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, myGuessNum
+
+addi $r10, $r0, 7200
+addi $r11, $r0, 3008
+addi $r12, $r0, 4
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal stringCompare
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+bne $r13, $r0, printEcho
+
+
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 add $r0, $r0, $r0
 
 finishEnter:
 jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
 j printConsole
 
 finishEnter2:
@@ -149,16 +239,57 @@ j readyToType
 
 j finish
 
-# ~~~~ guessGame
-# user 1 types a character
-# presses enter when completed
-# user 2 types a character
-# every time the word is not equal, a letter is given
 
-guessGame:
-jal clearScreen
+printDuke:
+jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+addi $r21, $r0, 8000
+sw $r21, 2880($r0)
+addi $r21, $r0, 8100
+sw $r21, 2881($r0)
+addi $r21, $r0, 8200
+sw $r21, 2882($r0)
+addi $r21, $r0, 8300
+sw $r21, 2944($r0)
+addi $r21, $r0, 8400
+sw $r21, 2945($r0)
+addi $r21, $r0, 8500
+sw $r21, 2946($r0)
+addi $r21, $r0, 8600
+sw $r21, 3008($r0)
+addi $r21, $r0, 8700
+sw $r21, 3009($r0)
+addi $r21, $r0, 8800
+sw $r21, 3010($r0)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+j finishEnter
 
 
+# ~~~~ printEcho
+
+printEcho:
+
+jal shiftUp
+addi $r10, $r0, 60
+
+doSinglePrintEcho:
+beq $r10, $r0, finishEnter
+lw $r21, 2948($r10)
+sw $r21, 3007($r10)
+addi $r10, $r10, -1
+j doSinglePrintEcho
 
 # ~~~~ printAbc
 
@@ -212,7 +343,90 @@ finishPrintP:
 addi $r20, $r0, 15900
 sw $r20, 0($r22)
 jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+j finishEnter
 
+doSleep:
+
+lw $r25, 3014($r0) # 13200
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+
+jal shiftUp
+
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+addi $r25, $r25, -12700 # 500 will be r21
+
+doSingleSleep:
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+beq $r25, $r0, finishSingleSleep
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+jal waitOneSec
+addi $r25, $r25, -100
+j doSingleSleep
+
+finishSingleSleep:
+jal shiftUp
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+j finishEnter
+
+# ~~~~ guessNum
+guessNumberGame:
+lw $r25, 3016($r0) # 
+sw $r25, 9800($r0)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+
+#j finish
+
+#jal clearScreen
+#j finishEnter
+j main
+
+# ~~~~ myGuessNum
+myGuessNum:
+lw $r26, 3014($r0)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+lw $r25, 9800($r0)
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+beq $r25, $r26, printCorrect
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+add $r0, $r0, $r0
+j printWrong
+
+# ~~~~ printCorrect
+
+printCorrect:
+jal shiftUp
+addi $r10, $r0, 7112
+addi $r12, $r0, 8
+jal stringPrint
+j finishEnter
+
+# ~~~~ printWrong
+
+printWrong:
+jal shiftUp
+addi $r10, $r0, 7120
+addi $r12, $r0, 6
+jal stringPrint
 j finishEnter
 
 # ~~~~ printConsole
@@ -329,7 +543,7 @@ waitOneSec:
 
 addi $r27, $r0, 0 # counter iterator
 addi $r28, $r0, 1 # put 1 first
-sll $r28, $r28, 24 # 8 million something
+sll $r28, $r28, 23 # 8 million something
 
 veryShortWait:
 beq $r27, $r28, finishedWait
@@ -346,7 +560,7 @@ waitTenSec:
 
 addi $r27, $r0, 0 # counter iterator
 addi $r28, $r0, 1 # put 1 first
-sll $r28, $r28, 26 # 8 million something * 8
+sll $r28, $r28, 27 # 8 million something * 8
 
 mediumWait:
 beq $r27, $r28, finishedMediumWait
@@ -525,4 +739,3 @@ finish:
 j finish
 
 .data
-
